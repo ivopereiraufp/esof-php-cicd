@@ -1,6 +1,6 @@
 {
     "name": "ivoaspereira/php-testing",
-    "description":"CI/CD Example"
+    "description":"CI/CD Example",
     "type": "project",
     "require-dev": {
         "phpunit/phpunit": "^9"

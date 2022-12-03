@@ -7,7 +7,7 @@ use InvalidArgumentException;
 class User
 {
     public int $age;
-    public array $favorite_movies = [];
+    public array $favoriteMovies = [];
     public string $name;
 
     /**
@@ -39,7 +39,9 @@ class User
 
     public function removeFavoriteMovie(string $movie): bool
     {
-        if (!in_array($movie, $this->favorite_movies)) throw new InvalidArgumentException("Unknown movie: " . $movie);
+        if (!in_array($movie, $this->favorite_movies)){ 
+            throw new InvalidArgumentException("Unknown movie: " . $movie);
+        }
 
         unset($this->favorite_movies[array_search($movie, $this->favorite_movies)]);
 

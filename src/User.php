@@ -32,18 +32,18 @@ class User
 
     public function addFavoriteMovie(string $movie): bool
     {
-        $this->$favoriteMovies[] = $movie;
+        $this->favoriteMovies[] = $movie;
 
         return true;
     }
 
     public function removeFavoriteMovie(string $movie): bool
     {
-        if (!in_array($movie, $this->$favoriteMovies)) {
+        if (!in_array($movie, $this->favoriteMovies)) {
             throw new InvalidArgumentException("Unknown movie: " . $movie);
         }
 
-        unset($this->$favoriteMovies[array_search($movie, $this->$favoriteMovies)]);
+        unset($this->favoriteMovies[array_search($movie, $this->favoriteMovies)]);
 
         return true;
     }

@@ -51,4 +51,12 @@ final class UserTest extends TestCase
         $this->assertNotContains('Avengers', $user->favoriteMovies);
         $this->assertCount(1, $user->favoriteMovies);
     }
+
+    public function testTellNameNegative()
+    {
+        $user = new User(18, 'John');
+
+        $this->assertIsString($user->tellName());
+        $this->assertStringNotContainsStringIgnoringCase('Not John', $user->tellName());
+    }
 }

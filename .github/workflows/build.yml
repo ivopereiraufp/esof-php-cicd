@@ -1,25 +1,31 @@
-name: Build Prod
-
+name: Build
 on:
   push:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
-
+    branches:
+      - main
 jobs:
-  build:
-
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
-
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  
+  tests:
+    runs-on: ubuntu-latest
+    needs: sonarcloud
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
-
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
@@ -28,16 +34,8 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
-      
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
     - name: Run tests
       run: ./vendor/bin/phpunit --verbose tests
       

@@ -39,7 +39,7 @@ class User
 
     public function removeFavoriteMovie(string $movie): bool
     {
-        if (!in_array($movie, $this->$favoriteMovies)){ 
+        if (!in_array($movie, $this->$favoriteMovies)) {
             throw new InvalidArgumentException("Unknown movie: " . $movie);
         }
 
